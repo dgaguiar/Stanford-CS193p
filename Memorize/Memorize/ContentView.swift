@@ -7,16 +7,28 @@
 
 import SwiftUI
 
+// "🌼","🌹","🍁","🌵","🌻","🌳","🌷","🌺"
+// "🎄","🎁","✝️","🤶🏻","👨‍👩‍👦‍👦","❄️","🎠"
+// "😈","☠️","🫥","🕸️","👹","😱"
+
 struct ContentView: View {
-    let emojis = ["👻","🎃","🕷️","💀","😈","☠️","🫥","🕸️","👹","😱"]
+    let halloween = ["👻","🎃","🕷️","💀"]
+    let spring = ["🍀","🌸"]
+    let christimans = ["🧑🏻‍🎄","🎅🏼","☃️"]
     
-    @State var cardCount: Int = 4
+    @State var cardCount: Int = 8
+    @State var themeList: Array<String> = ["👻","🎃","🕷️","💀","👻","🎃","🕷️","💀"]
+    @State var indexesAdd: Array<Int> = []
+    @State var dropCards = false
     
     var body: some View {
         VStack{
+            Text("Memorize!").font(.largeTitle)
             ScrollView {
                 cards
             }
+            Divider()
+            startGameButton
             Spacer()
             cardCountAdjusters
         }
@@ -24,9 +36,9 @@ struct ContentView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
             ForEach(0..<cardCount, id: \.self) { index in
-                CardView(content: emojis[index], isFaceUp: true)
+                CardView(content: themeList[index], isFaceUp: dropCards)
                     .aspectRatio(2/3, contentMode: .fit)
             }
             .foregroundColor(.orange)
@@ -35,35 +47,53 @@ struct ContentView: View {
     
     var cardCountAdjusters: some View {
         HStack {
-            cardRemover
-            Spacer()
-            cardAdder
+            themeHalloweenSelect
+            themeSpringSelect
+            themeChristimansSelect
         }
         .font(.largeTitle)
         .foregroundColor(.black)
     }
     
-    func cardCountAjuster(by offset: Int, symbol: String) -> some View {
+    func cardThemeAjuster(by theme: Array<String>, symbol: String, counter: Int, title: String) -> some View {
+        VStack{
+            Button(action: {
+                themeList = theme + theme
+                themeList.shuffle()
+                cardCount = counter
+            }, label: {
+                Text(symbol)
+            })
+            Text(title).font(.subheadline).foregroundColor(.orange)
+        }
+    }
+    
+    var themeSpringSelect: some View {
+        cardThemeAjuster(by: spring, symbol: "🌻", counter: 4, title: "spring")
+    }
+    
+    var themeChristimansSelect: some View {
+        cardThemeAjuster(by: christimans, symbol: "🎅🏼", counter: 6, title: "natal")
+    }
+    
+    var themeHalloweenSelect: some View {
+        cardThemeAjuster(by: halloween, symbol: "👻", counter: 8, title: "horror")
+    }
+    
+    var startGameButton: some View {
         Button(action: {
-            cardCount += offset
+            themeList.shuffle()
+            dropCards = true
         }, label: {
-            Image(systemName: symbol).imageScale(.large)
+            Text("embaralhar").bold().font(.body)
         })
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
-    }
-    
-    var cardRemover: some View {
-        cardCountAjuster(by: -1, symbol: "minus.circle")
-    }
-    
-    var cardAdder: some View {
-        cardCountAjuster(by: 1, symbol: "plus.app")
     }
 }
 
 struct CardView: View {
     let content: String
     @State var isFaceUp = false
+    @State var notFound = true
     
     var body: some View {
         ZStack {
@@ -77,7 +107,9 @@ struct CardView: View {
             base.fill().opacity(isFaceUp ? 0 : 1)
         }
         .onTapGesture {
-            isFaceUp.toggle()
+            if notFound {
+                isFaceUp.toggle()
+            }
         }
     }
 }
