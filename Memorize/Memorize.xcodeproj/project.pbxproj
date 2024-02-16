@@ -8,17 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		5D75B01E2B7FBE5000C40440 /* MemorizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75B01D2B7FBE5000C40440 /* MemorizeApp.swift */; };
-		5D75B0202B7FBE5000C40440 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75B01F2B7FBE5000C40440 /* ContentView.swift */; };
+		5D75B0202B7FBE5000C40440 /* EmojiMemoryGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75B01F2B7FBE5000C40440 /* EmojiMemoryGameView.swift */; };
 		5D75B0222B7FBE5100C40440 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D75B0212B7FBE5100C40440 /* Assets.xcassets */; };
 		5D75B0252B7FBE5100C40440 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D75B0242B7FBE5100C40440 /* Preview Assets.xcassets */; };
+		5D75B02C2B80024B00C40440 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75B02B2B80024B00C40440 /* CardView.swift */; };
+		5D75B02E2B80044000C40440 /* MemorizeGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75B02D2B80044000C40440 /* MemorizeGame.swift */; };
+		5D75B0302B80062300C40440 /* EmojiMemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D75B02F2B80062300C40440 /* EmojiMemoryGame.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5D75B01A2B7FBE5000C40440 /* Memorize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memorize.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D75B01D2B7FBE5000C40440 /* MemorizeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeApp.swift; sourceTree = "<group>"; };
-		5D75B01F2B7FBE5000C40440 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5D75B01F2B7FBE5000C40440 /* EmojiMemoryGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGameView.swift; sourceTree = "<group>"; };
 		5D75B0212B7FBE5100C40440 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D75B0242B7FBE5100C40440 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5D75B02B2B80024B00C40440 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		5D75B02D2B80044000C40440 /* MemorizeGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeGame.swift; sourceTree = "<group>"; };
+		5D75B02F2B80062300C40440 /* EmojiMemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGame.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,9 +58,12 @@
 			isa = PBXGroup;
 			children = (
 				5D75B01D2B7FBE5000C40440 /* MemorizeApp.swift */,
-				5D75B01F2B7FBE5000C40440 /* ContentView.swift */,
+				5D75B01F2B7FBE5000C40440 /* EmojiMemoryGameView.swift */,
 				5D75B0212B7FBE5100C40440 /* Assets.xcassets */,
 				5D75B0232B7FBE5100C40440 /* Preview Content */,
+				5D75B02B2B80024B00C40440 /* CardView.swift */,
+				5D75B02D2B80044000C40440 /* MemorizeGame.swift */,
+				5D75B02F2B80062300C40440 /* EmojiMemoryGame.swift */,
 			);
 			path = Memorize;
 			sourceTree = "<group>";
@@ -137,8 +146,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D75B0202B7FBE5000C40440 /* ContentView.swift in Sources */,
+				5D75B0202B7FBE5000C40440 /* EmojiMemoryGameView.swift in Sources */,
+				5D75B02C2B80024B00C40440 /* CardView.swift in Sources */,
 				5D75B01E2B7FBE5000C40440 /* MemorizeApp.swift in Sources */,
+				5D75B02E2B80044000C40440 /* MemorizeGame.swift in Sources */,
+				5D75B0302B80062300C40440 /* EmojiMemoryGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

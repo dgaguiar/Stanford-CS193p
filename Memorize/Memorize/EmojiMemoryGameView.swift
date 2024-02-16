@@ -11,15 +11,12 @@ import SwiftUI
 // "🎄","🎁","✝️","🤶🏻","👨‍👩‍👦‍👦","❄️","🎠"
 // "😈","☠️","🫥","🕸️","👹","😱"
 
-struct ContentView: View {
+struct EmojiMemoryGameView: View {
     let halloween = ["👻","🎃","🕷️","💀"]
     let spring = ["🍀","🌸"]
     let christimans = ["🧑🏻‍🎄","🎅🏼","☃️"]
     
-    @State var cardCount: Int = 8
-    @State var themeList: Array<String> = ["👻","🎃","🕷️","💀","👻","🎃","🕷️","💀"]
-    @State var indexesAdd: Array<Int> = []
-    @State var dropCards = false
+    @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
         VStack{
@@ -36,10 +33,13 @@ struct ContentView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-            ForEach(0..<cardCount, id: \.self) { index in
-                CardView(content: themeList[index], isFaceUp: dropCards)
+        LazyVGrid(columns: [
+            GridItem(.adaptive(minimum: 80), spacing: 0)
+        ], spacing: 0) {
+            ForEach(viewModel.cards.indices, id: \.self) { index in
+                CardView(viewModel.cards[index])
                     .aspectRatio(2/3, contentMode: .fit)
+                    .padding(4)
             }
             .foregroundColor(.orange)
         }
@@ -58,9 +58,7 @@ struct ContentView: View {
     func cardThemeAjuster(by theme: Array<String>, symbol: String, counter: Int, title: String) -> some View {
         VStack{
             Button(action: {
-                themeList = theme + theme
-                themeList.shuffle()
-                cardCount = counter
+                //
             }, label: {
                 Text(symbol)
             })
@@ -69,7 +67,7 @@ struct ContentView: View {
     }
     
     var themeSpringSelect: some View {
-        cardThemeAjuster(by: spring, symbol: "🌻", counter: 4, title: "spring")
+        return cardThemeAjuster(by: spring, symbol: "🌻", counter: 4, title: "spring")
     }
     
     var themeChristimansSelect: some View {
@@ -82,38 +80,13 @@ struct ContentView: View {
     
     var startGameButton: some View {
         Button(action: {
-            themeList.shuffle()
-            dropCards = true
+            viewModel.shuffle()
         }, label: {
-            Text("embaralhar").bold().font(.body)
+            Text("shuffle").bold().font(.body)
         })
     }
 }
 
-struct CardView: View {
-    let content: String
-    @State var isFaceUp = false
-    @State var notFound = true
-    
-    var body: some View {
-        ZStack {
-            let base = RoundedRectangle(cornerRadius: 12)
-            Group {
-                base.fill(.white)
-                base.strokeBorder(lineWidth: 2)
-                Text(content).font(.largeTitle)
-            }
-            .opacity(isFaceUp ? 1: 0)
-            base.fill().opacity(isFaceUp ? 0 : 1)
-        }
-        .onTapGesture {
-            if notFound {
-                isFaceUp.toggle()
-            }
-        }
-    }
-}
-
 #Preview {
-    ContentView()
+    EmojiMemoryGameView(viewModel: EmojiMemoryGame())
 }
