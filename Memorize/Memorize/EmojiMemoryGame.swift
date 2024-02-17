@@ -11,17 +11,9 @@ import SwiftUI
 /// This is my ViewModel
 class EmojiMemoryGame: ObservableObject {
     // MARK: Static
-    /// is global to this class
-    private static let emojis = ["👻","🎃","🕷️","💀","😈","☠️","🫥","🕸️","👹","😱","🧙🏻‍♀️"]
 
     private static func createMemoryGame() -> MemoryGame<String> {
-        return  MemoryGame(numberOfPairsOfCards: 8) { pairIndex in
-            if emojis.indices.contains(pairIndex) {
-                return emojis[pairIndex]
-            } else {
-                return "⁉️"
-            }
-        }
+        return  MemoryGame(MemoryGame.Theme.themeHorror())
     }
     
     /// when you put `private` only the class who the `var` belong can use it
@@ -32,6 +24,10 @@ class EmojiMemoryGame: ObservableObject {
         return model.cards
     }
     
+    var theme: MemoryGame<String>.Theme {
+        return model.theme
+    }
+    
     // MARK: - Intents
     
     func shuffle() {
@@ -40,5 +36,9 @@ class EmojiMemoryGame: ObservableObject {
     
     func choose(_ card: MemoryGame<String>.Card) {
         model.choose(card)
+    }
+    
+    func choose(_ theme: MemoryGame<String>.Theme) {
+        model = MemoryGame(theme)
     }
 }

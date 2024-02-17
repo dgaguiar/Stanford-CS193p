@@ -7,28 +7,32 @@
 
 import SwiftUI
 
-// "🌼","🌹","🍁","🌵","🌻","🌳","🌷","🌺"
-// "🎄","🎁","✝️","🤶🏻","👨‍👩‍👦‍👦","❄️","🎠"
-// "😈","☠️","🫥","🕸️","👹","😱"
-
 struct EmojiMemoryGameView: View {
-    let halloween = ["👻","🎃","🕷️","💀"]
-    let spring = ["🍀","🌸"]
-    let christimans = ["🧑🏻‍🎄","🎅🏼","☃️"]
     
     @ObservedObject var viewModel: EmojiMemoryGame
     
+    var themes = [
+        MemoryGame<String>.Theme.themeHorror(),
+        MemoryGame<String>.Theme.themeSpring(),
+        MemoryGame<String>.Theme.themeSign(),
+        MemoryGame<String>.Theme.themeChristimans()
+    ]
+    
     var body: some View {
         VStack{
-            Text("Memorize!").font(.largeTitle)
+            title
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
             }
             Divider()
-            startGameButton
+            HStack {
+                startGameButton
+                Spacer()
+                newGameButton
+            }
+            
             Spacer()
-            cardCountAdjusters
         }
         .padding()
     }
@@ -45,24 +49,14 @@ struct EmojiMemoryGameView: View {
                         viewModel.choose(card)
                     }
             }
-            .foregroundColor(.orange)
+            .foregroundColor(viewModel.theme.color)
         }
     }
     
-    var cardCountAdjusters: some View {
-        HStack {
-            themeHalloweenSelect
-            themeSpringSelect
-            themeChristimansSelect
-        }
-        .font(.largeTitle)
-        .foregroundColor(.black)
-    }
-    
-    func cardThemeAjuster(by theme: Array<String>, symbol: String, counter: Int, title: String) -> some View {
+    func cardThemeAjuster(by theme: MemoryGame<String>.Theme, symbol: String, counter: Int, title: String) -> some View {
         VStack{
             Button(action: {
-                //
+                viewModel.choose(theme)
             }, label: {
                 Text(symbol)
             })
@@ -70,23 +64,27 @@ struct EmojiMemoryGameView: View {
         }
     }
     
-    var themeSpringSelect: some View {
-        return cardThemeAjuster(by: spring, symbol: "🌻", counter: 4, title: "spring")
-    }
-    
-    var themeChristimansSelect: some View {
-        cardThemeAjuster(by: christimans, symbol: "🎅🏼", counter: 6, title: "natal")
-    }
-    
-    var themeHalloweenSelect: some View {
-        cardThemeAjuster(by: halloween, symbol: "👻", counter: 8, title: "horror")
+    var title: some View {
+        VStack {
+            Text("Memorize!").font(.largeTitle)
+            Text(viewModel.theme.name).font(.title2).foregroundColor(.gray)
+        }
     }
     
     var startGameButton: some View {
         Button(action: {
             viewModel.shuffle()
         }, label: {
-            Text("shuffle").bold().font(.body)
+            Text("shuffle").bold().font(.title2)
+        })
+    }
+    
+    var newGameButton: some View {
+        Button(action: {
+            viewModel.choose(themes[Int.random(in: 0..<themes.count)])
+            viewModel.shuffle()
+        }, label: {
+            Text("new game").bold().font(.title2)
         })
     }
 }

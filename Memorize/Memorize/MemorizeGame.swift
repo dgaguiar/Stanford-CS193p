@@ -6,53 +6,29 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// This is my Model
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card>
+    private(set) var theme = MemoryGame.Theme.themeHorror()
     
-    init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
-        /// Array<Card>() == [Card]() == []
+    init(_ theme: Theme) {
         cards = []
+        self.theme = theme
         // add numberOfPairsOfCards X 2 cards
-        for pairIndedx in 0..<max(2, numberOfPairsOfCards) {
-            let content: CardContent = cardContentFactory(pairIndedx)
-            cards.append(Card(content: content, id: "\(pairIndedx+1)a"))
-            cards.append(Card(content: content, id: "\(pairIndedx+1)b"))
+        for pairIndedx in 0..<max(2, theme.numberOfPairs) {
+            cards.append(Card(content: theme.emoji[pairIndedx] as! CardContent, id: "\(pairIndedx+1)a"))
+            cards.append(Card(content: theme.emoji[pairIndedx] as! CardContent, id: "\(pairIndedx+1)b"))
         }
     }
     
     var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
             return cards.indices.filter { index in cards[index].isFaceUp }.only
-            
-            /// After tha Extension  Array using the code above
-//            var faceUpCardIndices = cards.indices.filter { index in cards[index].isFaceUp }
-//            return faceUpCardIndices.count == 1 ? faceUpCardIndices.first : nil
-            
-            /// The code below do the same thing that the code above but with more code
-//            for index in cards.indices {
-//                if cards[index].isFaceUp {
-//                    faceUpCardIndices.append(index)
-//                }
-//            }
-//            if faceUpCardIndices.count == 1 {
-//                return faceUpCardIndices.first
-//            } else {
-//                return nil
-//            }
         }
         set {
             cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) }
-            
-            /// The code below do the same thing that the code above but with more code
-//            for index in cards.indices {
-//                if index == newValue {
-//                    cards[index].isFaceUp = true
-//                } else {
-//                    cards[index].isFaceUp = false
-//                }
-//            }
         }
     }
     
@@ -86,10 +62,54 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             "\(id): \(content) \(isFaceUp ? "up": "down") \(isMatched ? "matched" : "")"
         }
     }
+    
+    struct Theme {
+        let name: String
+        let emoji: [String]
+        var numberOfPairs: Int
+        let color: Color
+    }
 }
 
 extension Array {
     var only: Element? {
         count == 1 ? first : nil
     }
+}
+
+extension MemoryGame.Theme {
+    static func themeSpring() -> MemoryGame.Theme {
+        return MemoryGame.Theme(name: PersonThemes.spring.rawValue,
+                                emoji: ["🍀","🌸","🌼","🌹","🍁","🌵","🌻","🌳","🌷","🌺"],
+                                numberOfPairs: 10,
+                                color: .green)
+    }
+    
+    static func themeChristimans() -> MemoryGame.Theme {
+        return MemoryGame.Theme(name: PersonThemes.christimans.rawValue,
+                                emoji: ["🧑🏻‍🎄","🎅🏼","☃️","🎄","🎁","✝️","🤶🏻","👨‍👩‍👦‍👦","❄️","🎠"],
+                                numberOfPairs: 10,
+                                color: .red)
+    }
+    
+    static func themeSign() -> MemoryGame.Theme {
+        return MemoryGame.Theme(name: PersonThemes.sign.rawValue,
+                                emoji: ["🚺","🚹","⚠️","🔞","🛄","🛜","♻️"],
+                                numberOfPairs: 7,
+                                color: .orange)
+    }
+    
+    static func themeHorror() -> MemoryGame.Theme {
+        return MemoryGame.Theme(name: PersonThemes.horror.rawValue,
+                                emoji: ["👻","🎃","🕷️","💀","😈","☠️","🫥","🕸️","👹","😱","🧙🏻‍♀️"],
+                                numberOfPairs: 11,
+                                color: .black)
+    }
+}
+
+enum PersonThemes: String {
+    case spring = "spring"
+    case christimans = "christimans"
+    case horror = "Helloween"
+    case sign = "sign"
 }
